@@ -11,8 +11,6 @@ async function getWords() {
     const token = await getChallengeToken();
     const words: string[] = [];
 
-    const start = performance.now();
-
     while (true) {
         try {
             const response = await axios.get(`${url}/word`, {
@@ -31,11 +29,6 @@ async function getWords() {
         }
     }
 
-    const end = performance.now();
-
-    const result = (end - start) / 1000;
-    console.log(':::Tiempo de demora::::', result);
-    console.log(words);
     return words;
 }
 
@@ -58,9 +51,7 @@ function fibonacciBinet(number: number): number {
 
 async function createAccessKey() {
     const initialString = (await joinWords());
-    console.log('join words after order:::', initialString);
     const sequenceLength = initialString.length;
-    console.log('longitud string:::', sequenceLength);
     const fibonacciSequence = [];
 
     for (let i = 0; ; i++) {
@@ -73,14 +64,12 @@ async function createAccessKey() {
         fibonacciSequence.push(fibValue);
     }
 
-    console.log('secuenca Fib:::::', fibonacciSequence);
-
     return fibonacciSequence.map(index => initialString[index]).join('');
 }
 
 async function sendContactInformation() {
     const accessKey = await createAccessKey();
-    console.log('Access Key::::', accessKey);
+
     const token = await getChallengeToken();
 
     return (await axios.post(`${url}/apply`, {
